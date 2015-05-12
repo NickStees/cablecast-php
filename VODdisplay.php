@@ -4,6 +4,7 @@ $server = "pittsfieldtv.dyndns.org";
 date_default_timezone_set('America/New_York');
 // End Configure
 
+try{
 $client = new SoapClient("http://" . $server . "/CablecastWS/CablecastWS.asmx?WSDL");  // Creates New SOAP client using WSDL file
  
 $searchDate = date("Y-m-d")."T12:00:00";
@@ -19,6 +20,10 @@ $result = $client->AdvancedShowSearch(array(
     'restrictToProjectID'    =>  0,
     'displayStreamingShowsOnly'   =>  1,
     'searchOtherSites'     =>   0,));
+} catch(SoapFault $e){
+ echo "ERROR:";
+  var_dump($e);
+}
 
 if(!isset($result->AdvancedShowSearchResult->SiteSearchResult->Shows->ShowInfo)) {
     $vods = array();
